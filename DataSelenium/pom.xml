@@ -1,0 +1,154 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.Selenium</groupId>
+  <artifactId>DataSelenium</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>DataSelenium</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+  <dependency>
+    <groupId>io.appium</groupId>
+    <artifactId>java-client</artifactId>
+    <version>3.3.0</version>
+</dependency>
+  <dependency>
+    <groupId>org.ini4j</groupId>
+    <artifactId>ini4j</artifactId>
+    <version>0.5.4</version>
+</dependency>
+  <dependency>
+    <groupId>org.apache.httpcomponents</groupId>
+    <artifactId>httpcore</artifactId>
+    <version>4.4.1</version>
+</dependency>
+  <dependency>
+    <groupId>org.apache.httpcomponents</groupId>
+    <artifactId>httpclient</artifactId>
+    <version>4.5</version>
+</dependency>
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>2.53.0</version>
+</dependency>
+<dependency>
+    <groupId>commons-logging</groupId>
+    <artifactId>commons-logging</artifactId>
+    <version>1.2</version>
+</dependency>
+<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+<!-- <dependency> -->
+<!--             <groupId>com.MyLogLib.driver</groupId> -->
+<!--             <artifactId>selenium-MyLogLib-java</artifactId> -->
+<!--             <version>1.0</version> -->
+<!--         </dependency> -->
+  </dependencies>
+  <!-- 将Web项目自动部署到tomcat服务器的相关 配置信息-->
+  <build> 
+        <plugins> 
+<plugin>  
+    <groupId>org.codehaus.cargo</groupId>  
+    <artifactId>cargo-maven2-plugin</artifactId>  
+    <version>1.4.9</version>  
+    <configuration>  
+        <container>  
+            <containerId>tomcat8x</containerId>  
+            <home>D:\java\apache-tomcat-8.0.26</home>  
+        </container>  
+        
+        <configuration>  
+            <type>existing</type>  
+            <home>D:\java\apache-tomcat-8.0.26</home>  
+        </configuration>  
+        <properties>
+                <cargo.tomcat.manager.url>http://localhost:8081/manager</cargo.tomcat.manager.url>
+                <cargo.remote.username>admin</cargo.remote.username>
+                <cargo.remote.password>123456</cargo.remote.password>
+            </properties>
+        
+    </configuration>  
+</plugin>
+<!--         maven结合jenkins配置信息   -->
+            <plugin>  
+                <groupId>org.apache.maven.plugins</groupId>  
+                <artifactId>maven-surefire-plugin</artifactId>  
+                <version>2.5</version>  
+            </plugin>
+             <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat8-maven-plugin</artifactId>
+                <version>2.1</version>
+            </plugin>
+            <plugin>  
+                    <groupId>org.apache.maven.plugins</groupId>  
+                    <artifactId>maven-compiler-plugin</artifactId>  
+                    <version>2.3.1</version>  
+                    <configuration>  
+                        <source>1.8</source>  
+                        <target>1.8</target>  
+                        <encoding>utf8</encoding>    
+                    </configuration>  
+            </plugin> 
+            <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.6</version>
+            <configuration>
+                <failOnMissingWebXml>false</failOnMissingWebXml>
+            </configuration>
+        </plugin>  
+        <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.4</version>
+        <executions>
+            <execution>
+                <phase>package</phase>
+                <goals>
+                        <goal>shade</goal>
+                </goals>
+                    <configuration>
+                     <filters>  
+                            <filter>  
+                                <artifact>*:*</artifact>  
+                                <excludes>  
+                                    <exclude>META-INF/*.SF</exclude>  
+                                    <exclude>META-INF/*.DSA</exclude>  
+                                    <exclude>META-INF/*.RSA</exclude>  
+                                </excludes>  
+                            </filter>  
+                        </filters>  
+                        <transformers>
+                                <transformer  
+                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">  
+                        <resource>META-INF/spring.handlers</resource>  
+                    </transformer>  
+                    <transformer  
+                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">  
+                        <mainClass>com.testcase.websetting.MySuite</mainClass>  
+                    </transformer>  
+                    <transformer  
+                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">  
+                        <resource>META-INF/spring.schemas</resource>  
+                    </transformer>
+                        </transformers>
+                    </configuration>
+            </execution>
+        </executions>
+        </plugin>
+        </plugins>  
+    </build>  
+</project>
